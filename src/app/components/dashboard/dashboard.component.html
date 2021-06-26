@@ -1,0 +1,32 @@
+<div style="width: 80%; margin: 4rem auto;">
+    <mat-divider></mat-divider>
+    <div style="margin: 10px 10px">
+        <span> Home </span>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div style="margin-top: 1rem;">
+        <div style="display: flex;align-items: baseline;">
+            <div style="margin: auto;transform: translateX(36px);" class="header-label">
+                <span>Employee List</span>
+            </div>
+            <div style="width: fit-content;">
+                <button mat-raised-button color='primary' (click)='handleAddClick()'>Add</button>
+            </div>
+        </div>
+        <div class="table-container">
+            <app-employee-list [employeeList]='employeeList' listType='currentList'
+                (actionEvent)='handleActionEvent($event)'></app-employee-list>
+        </div>
+
+    </div>
+    <div style="margin-top: 2rem;">
+        <div class="header-label">
+            <span>Deleted Employee List</span>
+        </div>
+        <div class="table-container">
+            <app-employee-list [employeeList]='deletedEmployeeList' listType='deletedList'
+                (actionEvent)='handleActionEvent($event)'></app-employee-list>
+        </div>
+    </div>
+</div>

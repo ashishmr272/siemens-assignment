@@ -1,0 +1,38 @@
+<div class="header-label">{{(data.type).toUpperCase()}}</div>
+<div style="margin-top: 1rem">
+
+    <form [formGroup]="form">
+        <mat-form-field appearance="standard" style="width: 100%;" required>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+        <div formGroupName="address">
+            <mat-form-field appearance="standard" style="width: 100%;" required>
+                <mat-label>Street</mat-label>
+                <input matInput formControlName="street">
+            </mat-form-field>
+            <mat-form-field appearance="standard" style="width: 100%;" required>
+                <mat-label>Suite</mat-label>
+                <input matInput formControlName="suite">
+            </mat-form-field>
+            <mat-form-field appearance="standard" style="width: 100%;" required>
+                <mat-label>City</mat-label>
+                <input matInput formControlName="city">
+            </mat-form-field>
+            <mat-form-field appearance="standard" style="width: 100%;" required>
+                <mat-label>Zip Code</mat-label>
+                <input matInput formControlName="zipcode">
+            </mat-form-field>
+        </div>
+        <div formGroupName="company">
+            <mat-form-field appearance="standard" style="width: 100%;" required>
+                <mat-label>Company</mat-label>
+                <input matInput formControlName="name">
+            </mat-form-field>
+        </div>
+        <div style="text-align: center;">
+            <button mat-raised-button color='primary' type="submit" [disabled]="!form.valid"
+                [mat-dialog-close]='form.value'>Save</button>
+        </div>
+    </form>
+</div>

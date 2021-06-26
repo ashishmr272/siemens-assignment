@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+
+  GET_EMPLOYEE_LIST_EP: 'https://jsonplaceholder.typicode.com/users'
 };
 
 /*
