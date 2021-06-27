@@ -22,6 +22,7 @@ export class EmployeeListComponent implements OnInit, OnChanges {
 
   @Input() employeeList: Employee[] = [];
   @Input() listType = '';
+  @Input() filterValue = '';
 
   @Output() actionEvent = new EventEmitter<ActionEvent>();
 
@@ -37,6 +38,9 @@ export class EmployeeListComponent implements OnInit, OnChanges {
     if (change['listType']) {
       this.actions = AppConstants.actions.get(this.listType);
     }
+    if (change['filterValue']) {
+      this.applyFilter(this.filterValue);
+    }
 
   }
 
@@ -48,5 +52,9 @@ export class EmployeeListComponent implements OnInit, OnChanges {
   handleActionClick(employee: Employee, action: string) {
     const actionEvent: ActionEvent = { employee, action };
     this.actionEvent.emit(actionEvent);
+  }
+
+  applyFilter(value: string) {
+    this.dataSource.filter = value;
   }
 }

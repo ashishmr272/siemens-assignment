@@ -32,13 +32,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 const MaterialComponent = [A11yModule, CdkTableModule, MatButtonModule, MatButtonToggleModule, MatToolbarModule, MatSidenavModule,
   MatIconModule, MatGridListModule, MatListModule, MatCardModule, MatTableModule, MatDialogModule,
   MatInputModule, MatSelectModule, MatTooltipModule, MatBadgeModule, MatTabsModule, MatChipsModule,
   MatSortModule, MatCheckboxModule, MatRadioModule, MatSnackBarModule, MatProgressSpinnerModule,
   MatFormFieldModule, MatMenuModule, MatPaginatorModule, MatDatepickerModule, MatNativeDateModule, MatSlideToggleModule,
-  MatProgressBarModule, MatBottomSheetModule, MatExpansionModule, MatDividerModule
+  MatProgressBarModule, MatBottomSheetModule, MatExpansionModule, MatDividerModule, MatAutocompleteModule
 ]
 
 @NgModule({

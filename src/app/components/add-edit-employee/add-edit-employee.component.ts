@@ -53,9 +53,4 @@ export class AddEditEmployeeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit() {
-    console.log(this.form);
-
-  }
-
 }
