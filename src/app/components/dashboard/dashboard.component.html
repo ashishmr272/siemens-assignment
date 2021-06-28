@@ -1,43 +1,24 @@
-<div style="width: 80%; margin: 4rem auto;">
-    <mat-divider></mat-divider>
-    <div style="margin: 10px 10px">
-        <span> Home </span>
+<div style="margin-top: 1rem;">
+    <div style="display: flex;align-items: baseline;">
+        <div style="margin: auto;transform: translateX(36px);" class="header-label">
+            <span>Employee List</span>
+        </div>
+        <div style="width: fit-content;">
+            <button mat-raised-button color='primary' (click)='handleAddClick()'>Add</button>
+        </div>
     </div>
-    <mat-divider></mat-divider>
-
-    <div style="margin-top: 1rem;">
-        <div style="display: flex;align-items: baseline;">
-            <div style="margin: auto;transform: translateX(36px);" class="header-label">
-                <span>Employee List</span>
-            </div>
-            <div style="width: fit-content;">
-                <button mat-raised-button color='primary' (click)='handleAddClick()'>Add</button>
-            </div>
-        </div>
-        <form class="example-form">
-            <mat-form-field class="example-full-width" appearance="fill">
-                <mat-label>Filter</mat-label>
-                <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                        {{option.name}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-        </form>
-        <div class="table-container">
-            <app-employee-list [employeeList]='employeeList' listType='currentList'
-                (actionEvent)='handleActionEvent($event)' [filterValue]='filterValue'></app-employee-list>
-        </div>
-
+    <div class="table-container">
+        <app-employee-list [employeeList]='employeeList' listType='currentList'
+            (actionEvent)='handleActionEvent($event)'></app-employee-list>
     </div>
-    <div style="margin-top: 2rem;">
-        <div class="header-label">
-            <span>Deleted Employee List</span>
-        </div>
-        <div class="table-container">
-            <app-employee-list [employeeList]='deletedEmployeeList' listType='deletedList'
-                (actionEvent)='handleActionEvent($event)'></app-employee-list>
-        </div>
+</div>
+<div style="margin-top: 4rem;">
+    <div class="header-label">
+        <span>Deleted Employee List</span>
+    </div>
+    <div class="table-container">
+        <!-- Re-using same Employee List Components -->
+        <app-employee-list [employeeList]='deletedEmployeeList' listType='deletedList'
+            (actionEvent)='handleActionEvent($event)'></app-employee-list>
     </div>
 </div>

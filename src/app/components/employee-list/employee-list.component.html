@@ -1,3 +1,46 @@
+<div style="display: flex;">
+    <!-- Auto Complete for Name -->
+    <form class="example-form" style="flex: 0 0 15%;">
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Filter Name</mat-label>
+            <input type="text" matInput [formControl]="nameControl" [matAutocomplete]="auto1">
+            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayAutoComplete">
+                <mat-option *ngFor="let option of filteredNameOptions | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+    <!-- Auto Complete for Address -->
+    <form class="example-form" style="flex: 0 0 45%; margin-left: 1rem;">
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Filter Address</mat-label>
+            <input type="text" matInput [formControl]="addressControl" [matAutocomplete]="auto2">
+            <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayAutoComplete">
+                <mat-option *ngFor="let option of filteredAddressOptions | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+    <!-- Auto Complete for Company -->
+    <form class="example-form" style="flex: 0 0 20%; margin-left: 1rem;">
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Filter Company</mat-label>
+            <input type="text" matInput [formControl]="companyControl" [matAutocomplete]="auto3">
+            <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayAutoComplete">
+                <mat-option *ngFor="let option of filteredCompanyOptions | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+    <div>
+        <button mat-raised-button color='accent' style="margin-left: 1rem;margin-top: 1rem;" (click)='handleClearFilter()'>Clear
+            Filter</button>
+    </div>
+</div>
+
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
 
@@ -10,13 +53,13 @@
         <!-- address Column -->
         <ng-container matColumnDef="address">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
-            <td mat-cell *matCellDef="let row"> {{row.address.street + ', ' +  row.address.suite + ', ' +  row.address.city + ', ' +  row.address.zipcode}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.address}} </td>
         </ng-container>
 
         <!-- Company Column -->
         <ng-container matColumnDef="company">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Company </th>
-            <td mat-cell *matCellDef="let row"> {{row.company.name }} </td>
+            <td mat-cell *matCellDef="let row"> {{row.company }} </td>
         </ng-container>
 
         <!-- Actions Column -->
@@ -26,7 +69,7 @@
                 <div>
                     <ng-container *ngFor='let action of actions'>
                         <button mat-raised-button [color]='action.color' style="margin-left: 1rem;"
-                            (click)='handleActionClick(row, action.field)'>{{action.label}}</button>
+                            (click)='handleActionClick(row.id, action.field)'>{{action.label}}</button>
                     </ng-container>
                 </div>
             </td>
@@ -34,10 +77,5 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-        <!-- Row shown when there is no matching data. -->
-        <!-- <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-        </tr> -->
     </table>
 </div>

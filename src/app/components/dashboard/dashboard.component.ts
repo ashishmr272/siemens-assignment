@@ -20,9 +20,6 @@ export class DashboardComponent implements OnInit {
   employeeList: Employee[] = [];
   deletedEmployeeList: Employee[] = [];
   maxEmployeeId!: number;
-  filterValue = '';
-  myControl = new FormControl();
-  filteredOptions!: Observable<Employee[]>;
 
   constructor(private _employeeService: EmployeeService, public _dialog: MatDialog,) { }
 
@@ -30,73 +27,49 @@ export class DashboardComponent implements OnInit {
     this.getEmployeeList();
   }
 
+  /**
+   * Get Employee List from API
+   */
   async getEmployeeList() {
     try {
       const employeeList: Employee[] = await this._employeeService.getEmployeeList().toPromise();
       if (checkIfArrayContainsData(employeeList)) {
         this.employeeList = employeeList.sort(sortFunction);
         this.maxEmployeeId = this.employeeList[employeeList.length - 1].id;
-
-        this.filteredOptions = this.myControl.valueChanges
-          .pipe(
-            startWith(''),
-            map(value => typeof value === 'string' ? value : value.name),
-            map(name => name ? this._filter(name) : this.employeeList.slice()),
-          );
-
-        this.filteredOptions.subscribe((value) => {
-          console.log('eee', value);
-
-          if (value && value.length === 1) {
-
-            this.filterValue = value[0].name;
-          }
-          if (value && value.length === this.employeeList.length) {
-            this.filterValue = '';
-          }
-        })
-
       } else {
         this.employeeList = [];
       }
     } catch (error) {
-
+      console.log(error);
     }
   }
 
-  displayFn(user: Employee): string {
-    console.log('entered 1', user);
-
-    return user && user.name ? user.name : '';
-  }
-
-  private _filter(name: string): Employee[] {
-    console.log('entered 2', name);
-    const filterValue = name.toLowerCase();
-    // this.filterValue = filterValue;
-    return this.employeeList.filter(option => option.name.toLowerCase().includes(filterValue));
-  }
-
+  /**
+   * Handle Add Employee Action
+   */
   handleAddClick() {
     this.openModal(AppConstants.actionEvent.ADD);
   }
 
+  /**
+   * Handle Edit/Delete/Restore Event
+   * @param event :- Action events from child component for Edit/Delete/Restore
+   */
   handleActionEvent(event: ActionEvent) {
-    console.log({ event });
     switch (event.action) {
 
       case AppConstants.actionEvent.EDIT:
-        this.openModal(event.action, event.employee);
+        this.openModal(event.action, event.id);
         break;
 
       case AppConstants.actionEvent.DELETE:
-        this.employeeList = this.employeeList.filter(e => e.id !== event.employee.id);
-        this.deletedEmployeeList = getUpdatedEmployeeList(this.deletedEmployeeList, event.employee);
+        this.deletedEmployeeList = getUpdatedEmployeeList(this.employeeList, this.deletedEmployeeList, event.id);
+        this.employeeList = this.employeeList.filter(e => e.id !== event.id);
         break;
 
       case AppConstants.actionEvent.RESTORE:
-        this.deletedEmployeeList = this.deletedEmployeeList.filter(e => e.id !== event.employee.id);
-        this.employeeList = getUpdatedEmployeeList(this.employeeList, event.employee);
+        this.employeeList = getUpdatedEmployeeList(this.deletedEmployeeList, this.employeeList, event.id);
+        this.deletedEmployeeList = this.deletedEmployeeList.filter(e => e.id !== event.id);
         break;
 
       default:
@@ -104,11 +77,19 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  /**
+   * Update Employee List, after adding employee in form
+   */
   updateAddedEmployeeList(emp: Employee) {
     emp.id = this.maxEmployeeId + 1;
-    this.employeeList = getUpdatedEmployeeList(this.employeeList, emp);
+    const updated = [...this.employeeList];
+    updated.push(emp);
+    this.employeeList = updated;
   }
 
+   /**
+   * Update Employee List, after editing employee in form
+   */
   updateEditedEmployeeList(emp: Employee) {
     const updatedList = JSON.parse(JSON.stringify(this.employeeList));
     let updatedEmp = updatedList.find((e: { id: number; }) => e.id === emp.id);
@@ -116,8 +97,12 @@ export class DashboardComponent implements OnInit {
     this.employeeList = updatedList;
   }
 
-  openModal(action: string, employee?: Employee) {
+  /**
+   * Modal to Added/Edit Employee Details
+   */
+  openModal(action: string, employeeId?: number) {
     console.log({ action });
+    const employee = this.employeeList.find(e => e.id === employeeId);
     const dialogRef = this._dialog.open(AddEditEmployeeComponent, {
       minWidth: '300px',
       maxWidth: '700px',
@@ -127,6 +112,10 @@ export class DashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
+
+      /**
+       * Check if any employee details where modified in the form
+       */
       if (result && !result.pristine) {
         const emp: Employee = Object.assign({}, employee, result.value);
         if (action === AppConstants.actionEvent.ADD) {

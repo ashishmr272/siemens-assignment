@@ -18,10 +18,15 @@ export class AddEditEmployeeComponent implements OnInit {
   name = new FormControl('', [Validators.required, Validators.email]);
 
   constructor(public _dialogRef: MatDialogRef<AddEditEmployeeComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
-    if (data && data.type === AppConstants.actionEvent.EDIT) {
-      const employeeDetails = data.value;
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
+  ngOnInit(): void {
+
+    /**
+     * Create Form based on event type
+     */
+    if (this.data && this.data.type === AppConstants.actionEvent.EDIT) {
+      const employeeDetails = this.data.value;
       this.form = new FormGroup({
         name: new FormControl(employeeDetails.name, Validators.required),
         address: new FormGroup({
@@ -48,9 +53,6 @@ export class AddEditEmployeeComponent implements OnInit {
         })
       });
     }
-  }
-
-  ngOnInit(): void {
   }
 
 }

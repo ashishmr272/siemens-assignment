@@ -16,6 +16,9 @@ export class EmployeeService {
     this.getEmployeeListUrl = environment.GET_EMPLOYEE_LIST_EP;
   }
 
+  /**
+   * Get Employee List from API
+   */
   getEmployeeList(): Observable<Employee[]> {
     return this._http.get<Employee[]>(this.getEmployeeListUrl);
   }
